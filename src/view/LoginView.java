@@ -28,7 +28,9 @@ public class LoginView {
 
             if (responseDTO.getUserType().equals("20")) {
                 System.out.println("관리자 권한으로 로그인하셨습니다.");
-                showAdminMenu();
+                AdminMenuView.showAdminMenu();
+            } else {
+                UserMenuView.showUserMenu();
             }
         } else {
             System.out.println("로그인 실패: 이메일 또는 비밀번호를 다시 확인하세요.");
