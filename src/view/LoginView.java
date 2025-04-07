@@ -6,6 +6,8 @@ import dto.UserLoginResponseDTO;
 
 import java.util.Scanner;
 
+import static view.UserMenuView.showUserMenu;
+
 public class LoginView {
     private LoginController loginController = new LoginController();
 

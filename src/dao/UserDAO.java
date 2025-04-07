@@ -34,4 +34,30 @@ public class UserDAO {
         }
         return user;
     }
+
+    public boolean insertUser(UserInsertDTO dto) {
+        String sql = "INSERT INTO TB_USER (id_user, nm_user, nm_paswd, no_mobile, nm_email, st_status, cd_user_type) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, dto.getEmail());
+            pstmt.setString(2, dto.getName());
+            pstmt.setString(3, dto.getPassword());
+            pstmt.setString(4, dto.getMobile());
+            pstmt.setString(5, dto.getEmail());
+            pstmt.setString(6, dto.getStatus());
+            pstmt.setString(7, dto.getUserType());
+
+            int result = pstmt.executeUpdate();
+            return result > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
