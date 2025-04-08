@@ -6,7 +6,7 @@ public class Main {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("\n=== JAVA e-Commerce 시스템 ===");
+            System.out.println("\n=== e-Commerce 시스템 ===");
             System.out.println("1. 로그인");
             System.out.println("2. 회원가입");
             System.out.println("0. 종료");
@@ -27,7 +27,7 @@ public class Main {
                     isRunning = false;
                     break;
                 default:
-                    System.out.println("잘못된 입력입니다.");
+                    System.out.println("잘못된 입력입니다. 메뉴의 숫자만 입력하세요.");
             }
         }
     }

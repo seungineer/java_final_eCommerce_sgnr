@@ -28,6 +28,9 @@ public class AdminMenuView {
                 case "2":
                     AdminMenuView.renderProductInsertMenu();
                     break;
+                case "3":
+                    AdminMenuView.renderProductModifyMenu();
+                    break;
             }
         }
     }
@@ -38,9 +41,6 @@ public class AdminMenuView {
         ProductInsertDTO dto = new ProductInsertDTO();
 
         System.out.println("\n=== 상품 등록 ===");
-        System.out.print("상품 코드: ");
-        dto.setProductCode(scanner.nextLine());
-
         System.out.print("상품명: ");
         dto.setProductName(scanner.nextLine());
 
@@ -56,6 +56,9 @@ public class AdminMenuView {
         System.out.print("판매 시작일: ");
         dto.setStartDate(scanner.nextLine());
 
+        System.out.print("판매 종료일: ");
+        dto.setEndDate(scanner.nextLine());
+
         boolean success = controller.registerProduct(dto);
 
         if (success) {
@@ -63,5 +66,15 @@ public class AdminMenuView {
         } else {
             System.out.println("상품 등록에 실패했습니다.");
         }
+    }
+
+    public static void renderProductModifyMenu() {
+        Scanner scanner = new Scanner(System.in);
+        ProductListView.render();
+        System.out.println("수정할 품목 번호 입력");
+        String noModItem = scanner.nextLine();
+        // noModItem을 수정하는 로직
+        // DB까지 수정되도록 해야 함
+
     }
 }
