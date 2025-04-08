@@ -103,4 +103,37 @@ public class ProductDAO {
             return false;
         }
     }
+
+    public boolean deleteProduct(String productCode) {
+        String sql = "DELETE FROM TB_PRODUCT WHERE no_product = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, productCode);
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateProductStock(String productCode, int newStock) {
+        String sql = "UPDATE TB_PRODUCT SET qt_stock = ? WHERE no_product = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, newStock);
+            pstmt.setString(2, productCode);
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

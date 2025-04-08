@@ -13,4 +13,8 @@ public class AdminProductController {
     public boolean updateProduct(ProductInsertDTO dto) {
         return productDAO.updateProduct(dto);
     }
+
+    public boolean deleteProduct(String productCode) {
+        return productDAO.deleteProduct(productCode);
+    }
 }

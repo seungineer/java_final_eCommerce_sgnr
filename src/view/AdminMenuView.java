@@ -26,16 +26,22 @@ public class AdminMenuView {
                     ProductListView.render();
                     break;
                 case "2":
-                    AdminMenuView.renderProductInsertMenu();
+                    AdminMenuView.renderProductInsert();
                     break;
                 case "3":
-                    AdminMenuView.renderModifyProductMenu();
+                    AdminMenuView.renderModifyProduct();
+                    break;
+                case "4":
+                    AdminMenuView.renderDeleteProduct();
+                    break;
+                case "5":
+                    AdminMenuView.renderUpdateProductStock();
                     break;
             }
         }
     }
 
-    public static void renderProductInsertMenu() {
+    public static void renderProductInsert() {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
         ProductInsertDTO dto = new ProductInsertDTO();
@@ -68,9 +74,10 @@ public class AdminMenuView {
         }
     }
 
-    public static void renderModifyProductMenu() {
+    public static void renderModifyProduct() {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
+
         ProductListView.render();
 
         System.out.print("수정할 상품의 상품 코드 입력: ");
@@ -103,6 +110,24 @@ public class AdminMenuView {
             System.out.println("상품이 성공적으로 수정되었습니다.");
         } else {
             System.out.println("상품 수정에 실패하였습니다.");
+        }
+    }
+
+    public static void renderDeleteProduct() {
+        Scanner scanner = new Scanner(System.in);
+        AdminProductController controller = new AdminProductController();
+
+        ProductListView.render();
+
+        System.out.print("삭제할 상품의 상품 코드 입력: ");
+        String productCode = scanner.nextLine();
+
+        boolean success = controller.deleteProduct(productCode);
+
+        if (success) {
+            System.out.println("상품이 성공적으로 삭제되었습니다.");
+        } else {
+            System.out.println("상품 삭제에 실패했습니다. 상품 코드가 존재하는지 확인하세요.");
         }
     }
 }
