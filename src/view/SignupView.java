@@ -25,6 +25,8 @@ public class SignupView {
         String mobile = scanner.nextLine();
 
         UserInsertDTO dto = new UserInsertDTO();
+
+        dto.setId(email);
         dto.setEmail(email);
         dto.setPassword(password);
         dto.setName(name);

@@ -23,7 +23,7 @@ public class AdminMenuView {
 
             switch (input) {
                 case "1":
-                    ProductListView.render();
+                    ProductListView.render(true);
                     break;
                 case "2":
                     AdminMenuView.renderProductInsert();
@@ -36,6 +36,10 @@ public class AdminMenuView {
                     break;
                 case "5":
                     AdminMenuView.renderUpdateProductQuantity();
+                    break;
+                case "0":
+                    isRunning = false;
+                    System.out.println("로그아웃 되었습니다.");
                     break;
             }
         }
@@ -81,7 +85,7 @@ public class AdminMenuView {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
 
-        ProductListView.render();
+        ProductListView.render(true);
 
         System.out.print("수정할 상품의 상품 코드 입력: ");
         String productCode = scanner.nextLine();
@@ -120,7 +124,7 @@ public class AdminMenuView {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
 
-        ProductListView.render();
+        ProductListView.render(true);
 
         System.out.print("삭제할 상품의 상품 코드 입력: ");
         String productCode = scanner.nextLine();
@@ -138,7 +142,7 @@ public class AdminMenuView {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
 
-        ProductListView.render();
+        ProductListView.render(true);
 
         System.out.print("재고를 변경할 상품의 상품 코드 입력: ");
         String productCode = scanner.nextLine();
