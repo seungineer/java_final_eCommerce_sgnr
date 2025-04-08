@@ -4,6 +4,7 @@ import dao.UserDAO;
 import dto.UserLoginRequestDTO;
 import dto.UserLoginResponseDTO;
 import model.User;
+import util.UserSession;
 
 public class LoginController {
     private UserDAO userDAO = new UserDAO();
@@ -15,6 +16,8 @@ public class LoginController {
         User user = userDAO.findByEmailAndPassword(email, password);
 
         if (user == null) return null;
+        UserSession.login(user);
+
         UserLoginResponseDTO responseDTO = new UserLoginResponseDTO();
         responseDTO.setUsername(user.getNmUser());
         responseDTO.setUserType(user.getCdUserType());

@@ -3,11 +3,12 @@ package view;
 import controller.AdminProductController;
 import dao.ProductDAO;
 import model.Product;
+import util.UserSession;
 
 import java.util.List;
 
 public class ProductListView {
-    public static void render(boolean isAdmin) {
+    public static void render() {
         ProductDAO productDAO = new ProductDAO();
         AdminProductController controller = new AdminProductController();
         List< Product> productList = productDAO.getAllProducts();
@@ -22,7 +23,7 @@ public class ProductListView {
             System.out.println("상품명: " + controller.diplayProductName(product));
             System.out.println("가격: " + product.getSalePrice());
             System.out.println("재고: " + product.getStock());
-            if (isAdmin) System.out.println("상품코드: " + product.getProductCode());
+            if (UserSession.isAdmin()) System.out.println("상품코드: " + product.getProductCode());
             System.out.println("-------------------------");
         }
     }

@@ -19,7 +19,7 @@ public class UserMenuView {
 
             switch (input) {
                 case "1":
-                    ProductListView.render(false);
+                    ProductListView.render();
                     break;
                 case "2":
                     // UserMenuView.renderModifyUser();
