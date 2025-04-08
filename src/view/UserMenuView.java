@@ -5,13 +5,14 @@ import dto.UserModifyDTO;
 import model.User;
 import util.UserSession;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class UserMenuView {
     public static void showUserMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
-        while (isRunning) {
+        while (isRunning && !Objects.isNull(UserSession.getUser())) {
             System.out.println("\n===== 사용자 메뉴 =====");
             System.out.println("1. 상품 목록 보기");
             System.out.println("2. 회원 정보 수정");
@@ -33,7 +34,7 @@ public class UserMenuView {
                      renderChangeUserPW();
                     break;
                 case "4":
-                    // renderSignOutUser();
+                     renderSignOutUser();
                     break;
                 case "0":
                     isRunning = false;
@@ -119,9 +120,31 @@ public class UserMenuView {
 
 
     public static void renderSignOutUser() {
-        System.out.println("\n[탈퇴 요청]");
-        // 회원 탈퇴 플래그 (st_status = ST02)로 변경 요청
-        // UserController.deactivateUser()
-        System.out.println("아직 구현되지 않았습니다.");
+        Scanner scanner = new Scanner(System.in);
+        User user = UserSession.getUser();
+
+        if (user == null) {
+            System.out.println("로그인 정보가 없습니다.");
+            return;
+        }
+
+        System.out.println("\n[회원 탈퇴 요청]");
+        System.out.print("정말 탈퇴하시겠습니까? (Y/N): ");
+        String confirm = scanner.nextLine();
+
+        if (!confirm.equalsIgnoreCase("Y")) {
+            System.out.println("탈퇴가 취소되었습니다.");
+            return;
+        }
+
+        UserController controller = new UserController();
+        boolean success = controller.deactivateUser(user.getIdUser());
+
+        if (success) {
+            UserSession.logout();
+            System.out.println("탈퇴 되었습니다.");
+        } else {
+            System.out.println("탈퇴 요청에 실패하였습니다.");
+        }
     }
 }

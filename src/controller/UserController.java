@@ -13,4 +13,8 @@ public class UserController {
     public boolean changePassword(String idUser, String oldPassword, String newPassword) {
         return userDAO.updatePassword(idUser, oldPassword, newPassword);
     }
+
+    public boolean deactivateUser(String idUser) {
+        return userDAO.updateStatusToWithdraw(idUser);
+    }
 }

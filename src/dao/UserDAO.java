@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class UserDAO {
     public User findByEmailAndPassword(String email, String password) {
-        String sql = "SELECT * FROM TB_USER WHERE id_user = ? AND nm_paswd = ?";
+        String sql = "SELECT * FROM TB_USER WHERE id_user = ? AND nm_paswd = ? AND st_status LIKE 'ST01'";
         User user = null;
 
         try (
@@ -99,6 +99,21 @@ public class UserDAO {
             } else {
                 return false;
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateStatusToWithdraw(String idUser) {
+        String sql = "UPDATE TB_USER SET st_status = 'ST02' WHERE id_user = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idUser);
+            return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
