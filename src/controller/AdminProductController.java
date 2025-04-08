@@ -9,4 +9,8 @@ public class AdminProductController {
     public boolean registerProduct(ProductInsertDTO dto) {
         return productDAO.insertProduct(dto);
     }
+
+    public boolean updateProduct(ProductInsertDTO dto) {
+        return productDAO.updateProduct(dto);
+    }
 }

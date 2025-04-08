@@ -40,7 +40,7 @@ public class ProductDAO {
 
 
     public List<Product> getAllProducts() {
-        String sql = "SELECT nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date FROM TB_PRODUCT"
+        String sql = "SELECT no_product, nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date FROM TB_PRODUCT"
             + " WHERE TO_DATE(dt_start_date, 'YYYYMMDD') <= SYSDATE AND TO_DATE(dt_end_date, 'YYYYMMDD') >= SYSDATE";
         List<Product> productList = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class ProductDAO {
 
             while (rs.next()) {
                 Product product = new Product();
+                product.setProductCode(rs.getString("no_product"));
                 product.setProductName(rs.getString("nm_product"));
                 product.setSalePrice(rs.getInt("qt_sale_price"));
                 product.setStock(rs.getInt("qt_stock"));
@@ -79,5 +80,27 @@ public class ProductDAO {
         }
     }
 
+    public boolean updateProduct(ProductInsertDTO dto) {
+        String sql = "UPDATE TB_PRODUCT " +
+                "SET nm_product = ?, nm_detail_explain = ?, qt_sale_price = ?, qt_stock = ?, dt_start_date = ?, dt_end_date = ? " +
+                "WHERE no_product = ?";
 
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, dto.getProductName());
+            pstmt.setString(2, dto.getDetail());
+            pstmt.setInt(3, dto.getSalePrice());
+            pstmt.setInt(4, dto.getStock());
+            pstmt.setString(5, dto.getStartDate());
+            pstmt.setString(6, dto.getEndDate());
+            pstmt.setString(7, dto.getProductCode());
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

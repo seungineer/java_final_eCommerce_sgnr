@@ -70,11 +70,39 @@ public class AdminMenuView {
 
     public static void renderModifyProductMenu() {
         Scanner scanner = new Scanner(System.in);
+        AdminProductController controller = new AdminProductController();
         ProductListView.render();
-        System.out.println("수정할 품목 번호 입력");
-        String noModItem = scanner.nextLine();
-        // noModItem을 수정하는 로직
-        // DB까지 수정되도록 해야 함
 
+        System.out.print("수정할 상품의 상품 코드 입력: ");
+        String productCode = scanner.nextLine();
+
+        ProductInsertDTO dto = new ProductInsertDTO();
+        dto.setProductCode(productCode);
+
+        System.out.print("변경할 상품명: ");
+        dto.setProductName(scanner.nextLine());
+
+        System.out.print("변경할 상품 설명: ");
+        dto.setDetail(scanner.nextLine());
+
+        System.out.print("변경할 판매가: ");
+        dto.setSalePrice(Integer.parseInt(scanner.nextLine()));
+
+        System.out.print("변경할 재고 수량: ");
+        dto.setStock(Integer.parseInt(scanner.nextLine()));
+
+        System.out.print("변경할 판매 시작일: ");
+        dto.setStartDate(scanner.nextLine());
+
+        System.out.print("변경할 판매 종료일: ");
+        dto.setEndDate(scanner.nextLine());
+
+        boolean success = controller.updateProduct(dto);
+
+        if (success) {
+            System.out.println("상품이 성공적으로 수정되었습니다.");
+        } else {
+            System.out.println("상품 수정에 실패하였습니다.");
+        }
     }
 }
