@@ -23,7 +23,7 @@ public class AdminMenuView {
 
             switch (input) {
                 case "1":
-//                    renderProductList();
+                    ProductListView.render();
                     break;
                 case "2":
                     AdminMenuView.renderProductInsertMenu();
@@ -53,7 +53,7 @@ public class AdminMenuView {
         System.out.print("재고 수량: ");
         dto.setStock(Integer.parseInt(scanner.nextLine()));
 
-        System.out.print("판매 시작일 (예: 20250407): ");
+        System.out.print("판매 시작일: ");
         dto.setStartDate(scanner.nextLine());
 
         boolean success = controller.registerProduct(dto);
