@@ -17,4 +17,9 @@ public class AdminProductController {
     public boolean deleteProduct(String productCode) {
         return productDAO.deleteProduct(productCode);
     }
+
+    public boolean updateProductQuantity(String productCode, int newStock) {
+        return productDAO.updateProductQuantity(productCode, newStock);
+    }
+
 }

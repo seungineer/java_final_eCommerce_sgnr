@@ -35,7 +35,7 @@ public class AdminMenuView {
                     AdminMenuView.renderDeleteProduct();
                     break;
                 case "5":
-                    AdminMenuView.renderUpdateProductStock();
+                    AdminMenuView.renderUpdateProductQuantity();
                     break;
             }
         }
@@ -130,4 +130,26 @@ public class AdminMenuView {
             System.out.println("상품 삭제에 실패했습니다. 상품 코드가 존재하는지 확인하세요.");
         }
     }
+
+    public static void renderUpdateProductQuantity() {
+        Scanner scanner = new Scanner(System.in);
+        AdminProductController controller = new AdminProductController();
+
+        ProductListView.render();
+
+        System.out.print("재고를 변경할 상품의 상품 코드 입력: ");
+        String productCode = scanner.nextLine();
+
+        System.out.print("업데이트 재고 수량 입력: ");
+        int newStock = Integer.parseInt(scanner.nextLine());
+
+        boolean success = controller.updateProductQuantity(productCode, newStock);
+
+        if (success) {
+            System.out.println("상품 재고가 성공적으로 변경되었습니다.");
+        } else {
+            System.out.println("재고 변경에 실패했습니다.");
+        }
+    }
+
 }
