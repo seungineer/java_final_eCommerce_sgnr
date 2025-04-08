@@ -78,6 +78,31 @@ public class UserDAO {
         }
     }
 
+    public boolean updatePassword(String idUser, String oldPassword, String newPassword) {
+        //chatGPT 인용
+        String checkSql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ? AND nm_paswd = ?";
+        String updateSql = "UPDATE TB_USER SET nm_paswd = ? WHERE id_user = ?";
 
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
 
+            checkStmt.setString(1, idUser);
+            checkStmt.setString(2, oldPassword);
+
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) == 1) {
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                    updateStmt.setString(1, newPassword);
+                    updateStmt.setString(2, idUser);
+                    return updateStmt.executeUpdate() > 0;
+                }
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

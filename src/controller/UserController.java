@@ -9,4 +9,8 @@ public class UserController {
     public boolean updateUserInfo(UserModifyDTO dto) {
         return userDAO.updateUserInfo(dto);
     }
+
+    public boolean changePassword(String idUser, String oldPassword, String newPassword) {
+        return userDAO.updatePassword(idUser, oldPassword, newPassword);
+    }
 }

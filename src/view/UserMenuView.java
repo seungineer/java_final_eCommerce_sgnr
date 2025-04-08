@@ -30,7 +30,7 @@ public class UserMenuView {
                      renderModifyUser();
                     break;
                 case "3":
-                    // renderChangeUserPW();
+                     renderChangeUserPW();
                     break;
                 case "4":
                     // renderSignOutUser();
@@ -83,11 +83,40 @@ public class UserMenuView {
 
 
     public static void renderChangeUserPW() {
+        Scanner scanner = new Scanner(System.in);
+        User user = UserSession.getUser();
+
+        if (user == null) {
+            System.out.println("로그인 정보가 없습니다.");
+            return;
+        }
+
         System.out.println("\n[비밀번호 변경]");
-        // 현재 비밀번호 확인 → 새 비밀번호 2번 입력
-        // UserController.changePassword(email, oldPw, newPw)
-        System.out.println("아직 구현되지 않았습니다.");
+        System.out.print("현재 비밀번호 입력: ");
+        String currentPw = scanner.nextLine();
+
+        System.out.print("새 비밀번호 입력: ");
+        String newPw1 = scanner.nextLine();
+
+        System.out.print("새 비밀번호 확인: ");
+        String newPw2 = scanner.nextLine();
+
+        if (!newPw1.equals(newPw2)) {
+            System.out.println("새 비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        UserController controller = new UserController();
+        boolean success = controller.changePassword(user.getIdUser(), currentPw, newPw1);
+
+        if (success) {
+            user.setNmPaswd(newPw1);
+            System.out.println("비밀번호가 성공적으로 변경되었습니다.");
+        } else {
+            System.out.println("비밀번호 변경에 실패했습니다. 현재 비밀번호를 확인하세요.");
+        }
     }
+
 
     public static void renderSignOutUser() {
         System.out.println("\n[탈퇴 요청]");
