@@ -26,16 +26,16 @@ public class AdminMenuView {
                     ProductListView.render(true);
                     break;
                 case "2":
-                    AdminMenuView.renderProductInsert();
+                    renderProductInsert();
                     break;
                 case "3":
-                    AdminMenuView.renderModifyProduct();
+                    renderModifyProduct();
                     break;
                 case "4":
-                    AdminMenuView.renderDeleteProduct();
+                    renderDeleteProduct();
                     break;
                 case "5":
-                    AdminMenuView.renderUpdateProductQuantity();
+                    renderUpdateProductQuantity();
                     break;
                 case "0":
                     isRunning = false;
