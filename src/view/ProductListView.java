@@ -1,5 +1,6 @@
 package view;
 
+import controller.AdminProductController;
 import dao.ProductDAO;
 import model.Product;
 
@@ -8,6 +9,7 @@ import java.util.List;
 public class ProductListView {
     public static void render() {
         ProductDAO productDAO = new ProductDAO();
+        AdminProductController controller = new AdminProductController();
         List< Product> productList = productDAO.getAllProducts();
 
         System.out.println("\n===== 상품 목록 =====");
@@ -17,7 +19,7 @@ public class ProductListView {
         }
 
         for (Product product : productList) {
-            System.out.println("상품명: " + product.getProductName());
+            System.out.println("상품명: " + controller.diplayProductName(product));
             System.out.println("가격: " + product.getSalePrice());
             System.out.println("재고: " + product.getStock());
             System.out.println("상품코드: " + product.getProductCode());

@@ -8,6 +8,7 @@ public class Product {
     private int stock;
     private String startDate;
     private String endDate;
+    private int saleStatus;
 
     public String getProductCode() { return productCode; }
     public void setProductCode(String productCode) { this.productCode = productCode; }
@@ -29,4 +30,7 @@ public class Product {
 
     public String getDetailExplain() { return detailExplain; }
     public void setDetailExplain(String detailExplain) {this.detailExplain = detailExplain; }
+
+    public int getSaleStatus() { return saleStatus; }
+    public void setSaleStatus(int saleStatus) {this.saleStatus = saleStatus; }
 }

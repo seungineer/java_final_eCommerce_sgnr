@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ProductDAO {
     public boolean insertProduct(ProductInsertDTO dto) {
-        String sql = "INSERT INTO TB_PRODUCT (no_product, nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO TB_PRODUCT (no_product, nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date, sale_status) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionManager.getConnection()) {
             String productCode = generateProductCode(conn);  // 시퀀스로 생성
@@ -28,6 +28,7 @@ public class ProductDAO {
                 pstmt.setInt(5, dto.getStock());
                 pstmt.setString(6, dto.getStartDate());
                 pstmt.setString(7, dto.getEndDate());
+                pstmt.setInt(8, dto.getSaleStatus());
 
                 return pstmt.executeUpdate() > 0;
             }
@@ -40,7 +41,7 @@ public class ProductDAO {
 
 
     public List<Product> getAllProducts() {
-        String sql = "SELECT no_product, nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date FROM TB_PRODUCT"
+        String sql = "SELECT no_product, nm_product, nm_detail_explain, qt_sale_price, qt_stock, dt_start_date, dt_end_date, sale_status FROM TB_PRODUCT"
             + " WHERE TO_DATE(dt_start_date, 'YYYYMMDD') <= SYSDATE AND TO_DATE(dt_end_date, 'YYYYMMDD') >= SYSDATE";
         List<Product> productList = new ArrayList<>();
 
@@ -57,6 +58,7 @@ public class ProductDAO {
                 product.setStartDate(rs.getString("dt_start_date"));
                 product.setEndDate(rs.getString("dt_end_date"));
                 product.setDetailExplain(rs.getString("nm_detail_explain"));
+                product.setSaleStatus(rs.getInt("sale_status"));
 
                 productList.add(product);
             }
@@ -70,14 +72,7 @@ public class ProductDAO {
 
     public String generateProductCode(Connection conn) throws SQLException {
         // chatGPT 인용
-        String sql = "SELECT SEQ_PRODUCT_NO.NEXTVAL FROM DUAL";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return "Product" + rs.getInt(1);
-            }
-            return null;
-        }
+        return "Product" + System.currentTimeMillis();
     }
 
     public boolean updateProduct(ProductInsertDTO dto) {

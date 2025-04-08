@@ -8,6 +8,7 @@ public class ProductInsertDTO {
     private int stock;
     private String startDate;
     private String endDate;
+    private int saleStatus;
 
     public String getProductCode() { return productCode; }
     public void setProductCode(String productCode) { this.productCode = productCode; }
@@ -29,4 +30,7 @@ public class ProductInsertDTO {
 
     public String getEndDate() { return endDate; }
     public void setEndDate(String endDate) { this.endDate = endDate; }
+
+    public int getSaleStatus() { return saleStatus; }
+    public void setSaleStatus(int saleStatus) { this.saleStatus = saleStatus; }
 }

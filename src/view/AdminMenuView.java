@@ -65,6 +65,9 @@ public class AdminMenuView {
         System.out.print("판매 종료일: ");
         dto.setEndDate(scanner.nextLine());
 
+        System.out.print("판매 중지 여부(0:O, 1:X): ");
+        dto.setSaleStatus(Integer.parseInt(scanner.nextLine()));
+
         boolean success = controller.registerProduct(dto);
 
         if (success) {
