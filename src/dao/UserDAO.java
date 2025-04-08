@@ -1,5 +1,6 @@
 package dao;
 
+import dto.UserModifyDTO;
 import model.User;
 import util.ConnectionManager;
 
@@ -58,6 +59,25 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean updateUserInfo(UserModifyDTO dto) {
+        String sql = "UPDATE TB_USER SET nm_user = ?, no_mobile = ? WHERE id_user = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, dto.getName());
+            pstmt.setString(2, dto.getMobileNo());
+            pstmt.setString(3, dto.getId());
+
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
 }
