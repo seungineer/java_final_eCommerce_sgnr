@@ -68,6 +68,7 @@ public class ProductDAO {
     }
 
     public String generateProductCode(Connection conn) throws SQLException {
+        // chatGPT 인용
         String sql = "SELECT SEQ_PRODUCT_NO.NEXTVAL FROM DUAL";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -77,4 +78,6 @@ public class ProductDAO {
             return null;
         }
     }
+
+
 }

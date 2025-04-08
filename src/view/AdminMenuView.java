@@ -29,7 +29,7 @@ public class AdminMenuView {
                     AdminMenuView.renderProductInsertMenu();
                     break;
                 case "3":
-                    AdminMenuView.renderProductModifyMenu();
+                    AdminMenuView.renderModifyProductMenu();
                     break;
             }
         }
@@ -68,7 +68,7 @@ public class AdminMenuView {
         }
     }
 
-    public static void renderProductModifyMenu() {
+    public static void renderModifyProductMenu() {
         Scanner scanner = new Scanner(System.in);
         ProductListView.render();
         System.out.println("수정할 품목 번호 입력");
