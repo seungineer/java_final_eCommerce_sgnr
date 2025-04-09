@@ -17,7 +17,7 @@ public class ProductDAO {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionManager.getConnection()) {
-            String productCode = generateProductCode(conn);  // 시퀀스로 생성
+            String productCode = generateProductCode(conn);
             dto.setProductCode(productCode);
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

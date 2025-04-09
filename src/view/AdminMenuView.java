@@ -119,7 +119,6 @@ public class AdminMenuView {
         System.out.print("변경할 판매 종료일: ");
         dto.setEndDate(scanner.nextLine());
 
-        System.out.print("변경할 상품 판매 중지 여부(0: O, 1: X): ");
         dto.setSaleStatus(readValidSaleStatus(scanner));
 
         boolean success = controller.updateProduct(dto);
@@ -261,6 +260,7 @@ public class AdminMenuView {
 
     private static int readValidSaleStatus(Scanner scanner) {
         while (true) {
+            System.out.print("변경할 상품 판매 중지 여부(0: O, 1: X): ");
             try {
                 int status = Integer.parseInt(scanner.nextLine());
                 if (status != 0 && status != 1) {

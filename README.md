@@ -1,7 +1,5 @@
 # java_final_eCommerce
 
----
-
 > 💡 목표: e-commerce 기능 구현 Java App 개발
 ## 작업 범위
 - [x] 사용자 관리 구현
@@ -27,12 +25,24 @@
    - `id`/`pw`는 코드 내 key-in되어 있음
 2. `src/Main.java` 실행
 3. 로그인 시 아래 계정 사용
-   - **Administrator** 계정(=상품 관리 기능 가능)
+   - Administrator 계정(=상품 관리 기능 가능)
      - id: admin@gmail.com
      - pw: Admin1
    - General User 계정
      - id: kopo@gmail.com
      - pw: Kopo1
+
+## 실행 환경
+- 운영체제
+  - macOS Sequoia 15.3.1
+- JDK 버전
+  - openjdk 23.0.1
+- 빌드 도구
+  - Gradle
+- 데이터베이스
+  - Oracle Cloud DB
+- 외부 라이브러리
+  - OJDBC11-full
 
 ## 구현 영상
 - 영상 첨부
