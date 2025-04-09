@@ -1,6 +1,50 @@
-# java_final_eCommerce_sgnr/tree/main
+# java_final_eCommerce
 
+---
 
+> 💡 목표: e-commerce 기능 구현 Java App 개발
+## 작업 범위
+- [x] 사용자 관리 구현
+  - [x] 회원 가입 기능
+  - [x] 회원 탈퇴 기능
+  - [x] 로그인 / 로그아웃 기능
+- [x] 상품 관리 구현
+  - [x] 상품 등록 기능
+  - [x] 상품 수정 기능
+  - [x] 상품 삭제 기능
+  - [x] 상품 재고 변경 기능
+  - [x] 상품 판매 여부 관리 기능
+- [x] 상품 전시 구현
+  - [x] 목록 조회 기능(비회원 포함)
+  - [x] 세부 사항 조회 기능
+  - [x] 상품 검색 기능
+
+## 실행 방법
+1. DB 접속을 위한 `URL` 주소를 local Wallet 파일 주소로 변경
+   - `src/util/ConnectionManager.java` 파일에서 변경 가능
+   - `id`/`pw`는 코드 내 key-in되어 있음
+2. `src/Main.java` 실행
+3. 로그인 시 아래 계정 사용
+   - **Administrator** 계정(=상품 관리 기능 가능)
+     - id: admin@gmail.com
+     - pw: Admin1
+   - General User 계정
+     - id: kopo@gmail.com
+     - pw: Kopo1
+
+## 구현 영상
+- 영상 첨부
+
+## 특이 사항
+### DB 테이블 수정
+- DB의 `TB_PRODUCT` 테이블에 `SALE_STATUS` 열을 추가하여 판매 중인지, 그렇지 않은지 상태를 저장합니다.  
+### 사용자 구분 코드별 렌더링
+- `AminMenuView.java` / `UserMenuView.java`로 각각 관리자, 사용자에 대해 다른 렌더링 뷰를 제공합니다.
+- 상품 목록 조회 시 **관리자 로그인**일 때만 상품 코드가 노출됩니다. 
+
+## 프로그램 작동 구조
+
+## 코드 구조
 ```mermaid
 flowchart TD
     main[Main.java]:::entry
