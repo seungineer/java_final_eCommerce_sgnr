@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-    public User findByEmailAndPassword(String email, String password) throws DataAccessException {
+    public User findByEmailAndPassword(String email, String password) {
         String sql = "SELECT * FROM TB_USER WHERE id_user = ? AND nm_paswd = ? AND st_status LIKE 'ST01'";
         User user = null;
 
@@ -35,7 +35,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException("로그인 중 DB 오류 발생", e);
+            System.out.println("DB 연결 중 오류 발생: " + e.getMessage());
         }
         return user;
     }
@@ -131,7 +131,7 @@ public class UserDAO {
         }
     }
 
-    public boolean existsById(String idUser) throws DataAccessException {
+    public boolean existsById(String idUser) {
         String sql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ?";
 
         try (Connection conn = ConnectionManager.getConnection();
@@ -145,7 +145,7 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            throw new DataAccessException("중복 ID 조회 중 오류 발생", e);
+            System.out.println("중복 ID 조회 중 오류 발생 "+e.getMessage());
         }
         return false;
     }
