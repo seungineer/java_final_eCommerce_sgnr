@@ -9,7 +9,7 @@ public class ProductDetailView {
         System.out.println("\n=========== 상품 상세 정보 ===========");
         System.out.println("상품명       : " + product.getProductName());
         System.out.println("가격         : " + FormatPrice.koreaWon(product.getSalePrice()));
-        System.out.println("재고         : " + product.getStock());
+        System.out.println("재고         : " + product.getStock()+"개");
         System.out.println("상세 설명    : " + product.getDetailExplain());
         System.out.println("판매 종료일  : " + product.getEndDate());
 

@@ -62,7 +62,7 @@ public class AdminMenuView {
         System.out.print("판매가: ");
         dto.setSalePrice(Integer.parseInt(scanner.nextLine()));
 
-        System.out.print("재고 수량: ");
+        System.out.print("재고 수량(개): ");
         dto.setStock(Integer.parseInt(scanner.nextLine()));
 
         System.out.print("판매 시작일: ");
@@ -149,7 +149,7 @@ public class AdminMenuView {
         System.out.print("재고를 변경할 상품의 상품 코드 입력: ");
         String productCode = scanner.nextLine();
 
-        System.out.print("업데이트 재고 수량 입력: ");
+        System.out.print("업데이트 재고 수량 입력(개): ");
         int newStock = Integer.parseInt(scanner.nextLine());
 
         boolean success = controller.updateProductQuantity(productCode, newStock);

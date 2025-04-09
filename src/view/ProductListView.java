@@ -96,7 +96,7 @@ public class ProductListView {
         for (Product product : products) {
             System.out.println("상품명: " + controller.diplayProductName(product));
             System.out.println("가격: " + FormatPrice.koreaWon(product.getSalePrice()));
-            System.out.println("재고: " + product.getStock());
+            System.out.println("재고: " + product.getStock()+"개");
             if (UserSession.isAdmin()) System.out.println("상품코드: " + product.getProductCode());
             System.out.println("-------------------------");
         }
