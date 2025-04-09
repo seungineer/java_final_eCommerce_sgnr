@@ -1,11 +1,14 @@
 package view;
 
 import controller.AdminProductController;
+import controller.UserController;
 import dao.ProductDAO;
+import dao.UserDAO;
 import dto.ProductInsertDTO;
 import exception.NotValidModifyQuantityCommandException;
 import exception.NotValidProductInputException;
 import model.Product;
+import model.User;
 import util.UserSession;
 
 import java.util.List;
@@ -23,6 +26,7 @@ public class AdminMenuView {
             System.out.println("4. 상품 삭제");
             System.out.println("5. 상품 재고 관리");
             System.out.println("6. 상품 판매 여부 관리");
+            System.out.println("7. 유저 관리");
             System.out.println("0. 로그아웃");
 
             System.out.print("선택: ");
@@ -46,6 +50,9 @@ public class AdminMenuView {
                     break;
                 case "6":
                     renderModifySaleStatus();
+                    break;
+                case "7":
+                    renderUserManagementMenu();
                     break;
                 case "0":
                     isRunning = false;
@@ -300,4 +307,46 @@ public class AdminMenuView {
             System.out.println("상태 변경에 실패했습니다.");
         }
     }
+    private static void renderUserManagementMenu() {
+        Scanner scanner = new Scanner(System.in);
+        UserDAO userDAO = new UserDAO();
+        List<User> userList = userDAO.findAllUsers();
+
+        if (userList.isEmpty()) {
+            System.out.println("등록된 사용자가 없습니다.");
+            return;
+        }
+
+        System.out.println("\n===== 전체 사용자 목록 =====");
+        for (User user : userList) {
+            System.out.println("ID: " + user.getIdUser() +
+                    ", 이름: " + user.getNmUser() +
+                    ", 상태: " + ("ST01".equals(user.getStStatus()) ? "정상" : "탈퇴"));
+        }
+
+        System.out.println("\n0: 뒤로 가기");
+        System.out.println("1: 유저 상태 관리 (탈퇴 처리)");
+        System.out.print("선택: ");
+        String choice = scanner.nextLine();
+
+        if ("1".equals(choice)) {
+            System.out.print("탈퇴 처리할 사용자 ID 입력: ");
+            String userId = scanner.nextLine();
+
+            User user = userDAO.findUserById(userId);
+            if (user == null) {
+                System.out.println("해당 사용자를 찾을 수 없습니다.");
+                return;
+            }
+
+            if ("ST02".equals(user.getStStatus())) {
+                System.out.println("이미 탈퇴된 사용자입니다.");
+                return;
+            }
+
+            boolean success = new UserController().deactivateUser(userId);
+            System.out.println(success ? "탈퇴 처리되었습니다." : "탈퇴 처리에 실패했습니다.");
+        }
+    }
+
 }

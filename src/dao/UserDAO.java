@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     public User findByEmailAndPassword(String email, String password) {
@@ -149,4 +151,55 @@ public class UserDAO {
         }
         return false;
     }
+
+    public List<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT id_user, nm_user, st_status FROM TB_USER";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User();
+                user.setIdUser(rs.getString("id_user"));
+                user.setNmUser(rs.getString("nm_user"));
+                user.setStStatus(rs.getString("st_status"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public User findUserById(String idUser) {
+        String sql = "SELECT * FROM TB_USER WHERE id_user = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idUser);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setIdUser(rs.getString("id_user"));
+                user.setNmUser(rs.getString("nm_user"));
+                user.setNoMobile(rs.getString("no_mobile"));
+                user.setCdUserType(rs.getString("cd_user_type"));
+                user.setStStatus(rs.getString("st_status"));
+                return user;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 }
