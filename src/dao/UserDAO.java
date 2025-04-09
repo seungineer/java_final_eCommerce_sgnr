@@ -1,6 +1,10 @@
 package dao;
 
 import dto.UserModifyDTO;
+import exception.DataAccessException;
+import exception.InsertFailedException;
+import exception.PasswordMismatchException;
+import exception.UpdateFailedException;
 import model.User;
 import util.ConnectionManager;
 
@@ -10,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-    public User findByEmailAndPassword(String email, String password) {
+    public User findByEmailAndPassword(String email, String password) throws DataAccessException {
         String sql = "SELECT * FROM TB_USER WHERE id_user = ? AND nm_paswd = ? AND st_status LIKE 'ST01'";
         User user = null;
 
@@ -31,12 +35,12 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("로그인 중 DB 오류 발생", e);
         }
         return user;
     }
 
-    public boolean insertUser(UserInsertDTO dto) {
+    public boolean insertUser(UserInsertDTO dto) throws InsertFailedException {
         String sql = "INSERT INTO TB_USER (id_user, nm_user, nm_paswd, no_mobile, nm_email, st_status, cd_user_type) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -52,6 +56,9 @@ public class UserDAO {
             pstmt.setString(7, dto.getUserType());
 
             int result = pstmt.executeUpdate();
+            if (result == 0) {
+                throw new InsertFailedException("회원가입에 실패했습니다.");
+            }
             return result > 0;
 
         } catch (SQLException e) {
@@ -60,7 +67,7 @@ public class UserDAO {
         }
     }
 
-    public boolean updateUserInfo(UserModifyDTO dto) {
+    public boolean updateUserInfo(UserModifyDTO dto) throws UpdateFailedException {
         String sql = "UPDATE TB_USER SET nm_user = ?, no_mobile = ? WHERE id_user = ?";
 
         try (Connection conn = ConnectionManager.getConnection();
@@ -70,15 +77,17 @@ public class UserDAO {
             pstmt.setString(2, dto.getMobileNo());
             pstmt.setString(3, dto.getId());
 
-            return pstmt.executeUpdate() > 0;
+            int result = pstmt.executeUpdate();
+            if (result == 0) throw new UpdateFailedException("회원 정보 수정 실패");
 
+            return result > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new UpdateFailedException("DB 오류: " + e.getMessage());
         }
     }
 
-    public boolean updatePassword(String idUser, String oldPassword, String newPassword) {
+    public boolean updatePassword(String idUser, String oldPassword, String newPassword)
+            throws PasswordMismatchException, UpdateFailedException{
         //chatGPT 인용
         String checkSql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ? AND nm_paswd = ?";
         String updateSql = "UPDATE TB_USER SET nm_paswd = ? WHERE id_user = ?";
@@ -94,15 +103,16 @@ public class UserDAO {
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
                     updateStmt.setString(1, newPassword);
                     updateStmt.setString(2, idUser);
-                    return updateStmt.executeUpdate() > 0;
+                    int result = updateStmt.executeUpdate();
+                    if (result == 0) throw new UpdateFailedException("비밀번호 변경 실패");
+                    return result > 0;
                 }
             } else {
-                return false;
+                throw new PasswordMismatchException();
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new UpdateFailedException("DB 오류: " + e.getMessage());
         }
     }
 
@@ -121,7 +131,7 @@ public class UserDAO {
         }
     }
 
-    public boolean existsById(String idUser) {
+    public boolean existsById(String idUser) throws DataAccessException {
         String sql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ?";
 
         try (Connection conn = ConnectionManager.getConnection();
@@ -135,9 +145,8 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("중복 ID 조회 중 오류 발생", e);
         }
-
         return false;
     }
 }
