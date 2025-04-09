@@ -90,7 +90,7 @@ public class UserDAO {
 
     public boolean updatePassword(String idUser, String oldPassword, String newPassword)
             throws PasswordMismatchException, UpdateFailedException{
-        //chatGPT 인용
+        //ChatGPT 인용
         String checkSql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ? AND nm_paswd = ?";
         String updateSql = "UPDATE TB_USER SET nm_paswd = ? WHERE id_user = ?";
 
