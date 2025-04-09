@@ -4,6 +4,7 @@ import controller.AdminProductController;
 import dao.ProductDAO;
 import dto.ProductInsertDTO;
 import exception.NotValidModifyQuantityCommandException;
+import exception.NotValidProductInputException;
 import model.Product;
 import util.UserSession;
 
@@ -57,26 +58,14 @@ public class AdminMenuView {
         ProductInsertDTO dto = new ProductInsertDTO();
 
         System.out.println("\n=== 상품 등록 ===");
-        System.out.print("상품명: ");
-        dto.setProductName(scanner.nextLine());
 
-        System.out.print("상품 설명: ");
-        dto.setDetail(scanner.nextLine());
-
-        System.out.print("판매가: ");
-        dto.setSalePrice(Integer.parseInt(scanner.nextLine()));
-
-        System.out.print("재고 수량(개): ");
-        dto.setStock(Integer.parseInt(scanner.nextLine()));
-
-        System.out.print("판매 시작일: ");
-        dto.setStartDate(scanner.nextLine());
-
-        System.out.print("판매 종료일: ");
-        dto.setEndDate(scanner.nextLine());
-
-        System.out.print("판매 중지 여부(0:O, 1:X): ");
-        dto.setSaleStatus(Integer.parseInt(scanner.nextLine()));
+        dto.setProductName(readValidProductName(scanner));
+        dto.setDetail(readProductDetail(scanner));
+        dto.setSalePrice(readValidSalePrice(scanner));
+        dto.setStock(readValidStock(scanner));
+        dto.setStartDate(readValidStartDate(scanner));
+        dto.setEndDate(readValidEndDate(scanner));
+        dto.setSaleStatus(readValidSaleStatus(scanner));
 
         boolean success = controller.registerProduct(dto);
 
@@ -188,6 +177,89 @@ public class AdminMenuView {
             }
         }
     }
+    private static String readValidProductName(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("상품명: ");
+                String name = scanner.nextLine();
+                if (name.isBlank()) throw new NotValidProductInputException("❌ 상품명은 필수 입력입니다.");
+                return name;
+            } catch (NotValidProductInputException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static String readProductDetail(Scanner scanner) {
+        System.out.print("상품 설명: ");
+        return scanner.nextLine();
+    }
+
+    private static int readValidSalePrice(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("판매가: ");
+                int price = Integer.parseInt(scanner.nextLine());
+                if (price <= 0) throw new NotValidProductInputException("판매가는 0보다 커야 합니다.");
+                return price;
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력해주세요.");
+            } catch (NotValidProductInputException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static int readValidStock(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("재고 수량(개): ");
+                int stock = Integer.parseInt(scanner.nextLine());
+                if (stock < 0) throw new NotValidProductInputException("재고 수량은 음수가 될 수 없습니다.");
+                return stock;
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력해주세요.");
+            } catch (NotValidProductInputException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static String readValidStartDate(Scanner scanner) {
+        while (true) {
+            System.out.print("판매 시작일: ");
+            String startDate = scanner.nextLine();
+            if (!startDate.isBlank()) return startDate;
+            System.out.println("시작일은 필수 입력입니다.");
+        }
+    }
+
+    private static String readValidEndDate(Scanner scanner) {
+        while (true) {
+            System.out.print("판매 종료일: ");
+            String endDate = scanner.nextLine();
+            if (!endDate.isBlank()) return endDate;
+            System.out.println("종료일은 필수 입력입니다.");
+        }
+    }
+
+    private static int readValidSaleStatus(Scanner scanner) {
+        while (true) {
+            try {
+                System.out.print("판매 중지 여부(0: O, 1: X): ");
+                int status = Integer.parseInt(scanner.nextLine());
+                if (status != 0 && status != 1) {
+                    throw new NotValidProductInputException("0 또는 1만 입력 가능합니다.");
+                }
+                return status;
+            } catch (NumberFormatException e) {
+                System.out.println("숫자만 입력해주세요.");
+            } catch (NotValidProductInputException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
 
 
 }
