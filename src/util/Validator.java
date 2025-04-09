@@ -10,4 +10,9 @@ public class Validator {
         if (password == null) return false;
         return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{5,15}$");
     }
+
+    public static boolean isValidPhoneNo(String phoneNo) {
+        if (phoneNo == null) return  false;
+        return phoneNo.matches("^010-\\d{4}-\\d{4}$");
+    }
 }
