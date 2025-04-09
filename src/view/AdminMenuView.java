@@ -184,7 +184,7 @@ public class AdminMenuView {
             try {
                 System.out.print("상품명: ");
                 String name = scanner.nextLine();
-                if (name.isBlank()) throw new NotValidProductInputException("❌ 상품명은 필수 입력입니다.");
+                if (name.isBlank()) throw new NotValidProductInputException("상품명은 필수 입력입니다.");
                 return name;
             } catch (NotValidProductInputException e) {
                 System.out.println(e.getMessage());
