@@ -79,8 +79,10 @@ public class AdminMenuView {
     public static void renderModifyProduct() {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProducts();
 
-        ProductListView.render();
+        ProductListView.displayProducts(productList, controller);
 
         System.out.print("수정할 상품의 상품 코드 입력: ");
         String productCode = scanner.nextLine();
