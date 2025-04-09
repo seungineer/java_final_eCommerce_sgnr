@@ -29,4 +29,8 @@ public class AdminProductController {
         return productDAO.updateProductQuantity(productCode, updateStock);
     }
 
+    public boolean updateProductSaleStatus(String productCode, int saleStatus) {
+        return productDAO.updateSaleStatus(productCode, saleStatus);
+    }
+
 }

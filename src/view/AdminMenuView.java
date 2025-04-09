@@ -22,6 +22,7 @@ public class AdminMenuView {
             System.out.println("3. 상품 수정");
             System.out.println("4. 상품 삭제");
             System.out.println("5. 상품 재고 관리");
+            System.out.println("6. 상품 판매 여부 관리");
             System.out.println("0. 로그아웃");
 
             System.out.print("선택: ");
@@ -42,6 +43,9 @@ public class AdminMenuView {
                     break;
                 case "5":
                     renderUpdateProductQuantity();
+                    break;
+                case "6":
+                    renderModifySaleStatus();
                     break;
                 case "0":
                     isRunning = false;
@@ -107,6 +111,9 @@ public class AdminMenuView {
 
         System.out.print("변경할 판매 종료일: ");
         dto.setEndDate(scanner.nextLine());
+
+        System.out.print("변경할 상품 판매 중지 여부(0: O, 1: X): ");
+        dto.setSaleStatus(readValidSaleStatus(scanner));
 
         boolean success = controller.updateProduct(dto);
 
@@ -248,7 +255,6 @@ public class AdminMenuView {
     private static int readValidSaleStatus(Scanner scanner) {
         while (true) {
             try {
-                System.out.print("판매 중지 여부(0: O, 1: X): ");
                 int status = Integer.parseInt(scanner.nextLine());
                 if (status != 0 && status != 1) {
                     throw new NotValidProductInputException("0 또는 1만 입력 가능합니다.");
@@ -262,6 +268,36 @@ public class AdminMenuView {
         }
     }
 
+    private static void renderModifySaleStatus() {
+        Scanner scanner = new Scanner(System.in);
+        AdminProductController controller = new AdminProductController();
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProducts();
 
+        ProductListView.displayProducts(productList, controller);
 
+        System.out.print("판매 상태를 변경할 상품 코드 입력: ");
+        String productCode = scanner.nextLine();
+
+        Product target = productList.stream()
+                .filter(p -> p.getProductCode().equals(productCode))
+                .findFirst()
+                .orElse(null);
+
+        if (target == null) {
+            System.out.println("해당 상품을 찾을 수 없습니다.");
+            return;
+        }
+        System.out.print("변경할 상품 상태(0: 상품 판매 중지 처리, 1: 상품 판매 중 처리): ");
+        int newStatus = Integer.parseInt(scanner.nextLine());
+        String statusLabel = (newStatus == 0) ? "판매 중지" : "판매 중";
+
+        boolean success = controller.updateProductSaleStatus(productCode, newStatus);
+
+        if (success) {
+            System.out.println("상품이 " + statusLabel + " 상태로 변경되었습니다.");
+        } else {
+            System.out.println("상태 변경에 실패했습니다.");
+        }
+    }
 }

@@ -77,7 +77,7 @@ public class ProductDAO {
 
     public boolean updateProduct(ProductInsertDTO dto) {
         String sql = "UPDATE TB_PRODUCT " +
-                "SET nm_product = ?, nm_detail_explain = ?, qt_sale_price = ?, qt_stock = ?, dt_start_date = ?, dt_end_date = ? " +
+                "SET nm_product = ?, nm_detail_explain = ?, qt_sale_price = ?, qt_stock = ?, dt_start_date = ?, dt_end_date = ?, sale_status = ? " +
                 "WHERE no_product = ?";
 
         try (Connection conn = ConnectionManager.getConnection();
@@ -89,7 +89,8 @@ public class ProductDAO {
             pstmt.setInt(4, dto.getStock());
             pstmt.setString(5, dto.getStartDate());
             pstmt.setString(6, dto.getEndDate());
-            pstmt.setString(7, dto.getProductCode());
+            pstmt.setInt(7, dto.getSaleStatus());
+            pstmt.setString(8, dto.getProductCode());
 
             return pstmt.executeUpdate() > 0;
 
@@ -131,4 +132,19 @@ public class ProductDAO {
         }
     }
 
+    public boolean updateSaleStatus(String productCode, int saleStatus) {
+        String sql = "UPDATE TB_PRODUCT SET sale_status = ? WHERE no_product = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, saleStatus);
+            pstmt.setString(2, productCode);
+            return pstmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
