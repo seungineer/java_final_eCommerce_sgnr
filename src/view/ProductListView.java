@@ -65,7 +65,7 @@ public class ProductListView {
 
                     if (found != null) {
                         displayProductDetail(found);
-                        System.out.println("상품 목록으로 돌아가기(아무 키나 입력)");
+                        System.out.println("상품 목록으로 돌아가기(Enter 키 입력)");
                         scanner.nextLine();
                     } else {
                         System.out.println("해당 상품을 찾을 수 없습니다.");
