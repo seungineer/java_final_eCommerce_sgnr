@@ -1,9 +1,13 @@
 package view;
 
 import controller.AdminProductController;
+import dao.ProductDAO;
 import dto.ProductInsertDTO;
+import exception.NotValidModifyQuantityCommandException;
+import model.Product;
 import util.UserSession;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenuView {
@@ -143,22 +147,47 @@ public class AdminMenuView {
     public static void renderUpdateProductQuantity() {
         Scanner scanner = new Scanner(System.in);
         AdminProductController controller = new AdminProductController();
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> productList = productDAO.getAllProducts();
 
-        ProductListView.render();
+        ProductListView.displayProducts(productList, controller);
 
-        System.out.print("재고를 변경할 상품의 상품 코드 입력: ");
-        String productCode = scanner.nextLine();
+        while (true) {
+            try {
+                System.out.print("재고를 변경할 상품의 상품 코드 입력: ");
+                String productCode = scanner.nextLine();
 
-        System.out.print("업데이트 재고 수량 입력(개): ");
-        int newStock = Integer.parseInt(scanner.nextLine());
+                boolean isValidCode = productList.stream()
+                        .anyMatch(p -> productCode.equals(p.getProductCode()));
 
-        boolean success = controller.updateProductQuantity(productCode, newStock);
+                if (!isValidCode) {
+                    throw new NotValidModifyQuantityCommandException("존재하지 않는 상품 코드입니다.");
+                }
 
-        if (success) {
-            System.out.println("상품 재고가 성공적으로 변경되었습니다.");
-        } else {
-            System.out.println("재고 변경에 실패했습니다.");
+                System.out.print("업데이트 재고 수량 입력(개): ");
+                int newStock = Integer.parseInt(scanner.nextLine());
+
+                if (newStock < 0) {
+                    throw new NotValidModifyQuantityCommandException("재고 수량은 0 이상이어야 합니다.");
+                }
+
+                boolean success = controller.updateProductQuantity(productCode, newStock);
+
+                if (success) {
+                    System.out.println("상품 재고가 성공적으로 변경되었습니다.");
+                } else {
+                    System.out.println("재고 변경에 실패했습니다.");
+                }
+                break;
+
+            } catch (NotValidModifyQuantityCommandException e) {
+                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("수량은 숫자로 입력해주세요.");
+            } catch (Exception e) {
+            }
         }
     }
+
 
 }

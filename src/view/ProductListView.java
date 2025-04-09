@@ -29,18 +29,7 @@ public class ProductListView {
         while (running) {
             System.out.println("\n============= 상품 목록 =============");
             displayProducts(productList, controller);
-
-            System.out.println("\n[Menu]");
-            System.out.println("상품 정렬");
-            System.out.println("1: 가격 오름차순");
-            System.out.println("2: 가격 내림차순");
-            System.out.println("상품 검색");
-            System.out.println("3: 상품 이름으로 검색");
-            System.out.println("상품 상세");
-            System.out.println("4: 상품 상세 조회");
-            System.out.println("0: 뒤로 가기");
-            System.out.print("선택: ");
-            String input = scanner.nextLine();
+            String input = getMenuSelection(scanner);
 
             switch (input) {
                 case "1":
@@ -55,7 +44,7 @@ public class ProductListView {
                     List<Product> filtered = productList.stream()
                             .filter(p -> p.getProductName().contains(keyword))
                             .toList();
-                    if (filtered.isEmpty()) {
+                    if (keyword == "" || filtered.isEmpty()) {
                         System.out.println("검색 결과가 없습니다.");
                     } else {
                         System.out.println("\"" + keyword + "\"" + "검색 결과: 총 "+filtered.size()+"건" );
@@ -92,7 +81,7 @@ public class ProductListView {
         }
     }
 
-    private static void displayProducts(List<Product> products, AdminProductController controller) {
+    public static void displayProducts(List<Product> products, AdminProductController controller) {
         for (Product product : products) {
             System.out.println("상품명: " + controller.diplayProductName(product));
             System.out.println("가격: " + FormatPrice.koreaWon(product.getSalePrice()));
@@ -116,4 +105,17 @@ public class ProductListView {
         }
     }
 
+    private static String getMenuSelection(Scanner scanner) {
+        System.out.println("\n[Menu]");
+        System.out.println("상품 정렬");
+        System.out.println("1: 가격 오름차순");
+        System.out.println("2: 가격 내림차순");
+        System.out.println("상품 검색");
+        System.out.println("3: 상품 이름으로 검색");
+        System.out.println("상품 상세");
+        System.out.println("4: 상품 상세 조회");
+        System.out.println("0: 뒤로 가기");
+        System.out.print("선택: ");
+        return scanner.nextLine();
+    }
 }
