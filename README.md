@@ -1,7 +1,5 @@
 # java_final_eCommerce
 
----
-
 > 💡 목표: e-commerce 기능 구현 Java App 개발
 ## 작업 범위
 - [x] 사용자 관리 구현
