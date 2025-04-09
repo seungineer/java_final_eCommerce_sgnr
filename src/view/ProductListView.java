@@ -3,6 +3,7 @@ package view;
 import controller.AdminProductController;
 import dao.ProductDAO;
 import model.Product;
+import util.FormatPrice;
 import util.UserSession;
 
 import java.util.Comparator;
@@ -94,7 +95,7 @@ public class ProductListView {
     private static void displayProducts(List<Product> products, AdminProductController controller) {
         for (Product product : products) {
             System.out.println("상품명: " + controller.diplayProductName(product));
-            System.out.println("가격: " + product.getSalePrice());
+            System.out.println("가격: " + FormatPrice.koreaWon(product.getSalePrice()));
             System.out.println("재고: " + product.getStock());
             if (UserSession.isAdmin()) System.out.println("상품코드: " + product.getProductCode());
             System.out.println("-------------------------");
