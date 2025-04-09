@@ -131,13 +131,13 @@ public class UserDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt(1) > 0; // 존재하면 true
+                return rs.getInt(1) > 0;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false; // 기본적으로 존재하지 않는다고 간주
+        return false;
     }
 }
