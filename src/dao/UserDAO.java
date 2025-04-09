@@ -120,4 +120,24 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean existsById(String idUser) {
+        String sql = "SELECT COUNT(*) FROM TB_USER WHERE id_user = ?";
+
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idUser);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // 존재하면 true
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // 기본적으로 존재하지 않는다고 간주
+    }
 }
